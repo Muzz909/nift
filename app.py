@@ -114,6 +114,14 @@ pcr = get_pcr()
 # ---------------------------
 latest = data.iloc[-1]
 
+prev_5m = data.iloc[-2]
+
+price_now = latest['Close']
+price_5m_ago = prev_5m['Close']
+
+change_5m = price_now - price_5m_ago
+change_5m_pct = (change_5m / price_5m_ago) * 100 if price_5m_ago != 0 else 0
+
 # ===========================
 # ✅ ADVANCED CANDLE ANALYSIS (ADDED)
 # ===========================
@@ -209,6 +217,8 @@ elif body_pct > 30:
 else:
     strength = "😐 Weak / Indecisive"
 
+
+
 # ---------------------------
 # Candle Numeric Dashboard
 # ---------------------------
@@ -233,8 +243,13 @@ with colC:
     st.metric("Low", f"{l:.2f}")
 
 
+st.metric("5-min Ago", f"{price_5m_ago:.2f}")
+st.metric("Now", f"{price_now:.2f}")
+st.metric("5-min Change", f"{change_5m:.2f} ({change_5m_pct:.2f}%)")
 
-
+if abs(change_5m_pct) < 0.1:
+    filters_passed = False
+    reasons.append("No momentum (5m change too small)")
 
 
 
