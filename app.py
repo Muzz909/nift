@@ -241,15 +241,9 @@ with colC:
     st.metric("Candle Strength", strength)
     st.metric("High", f"{h:.2f}")
     st.metric("Low", f"{l:.2f}")
-
-
-st.metric("5-min Ago", f"{price_5m_ago:.2f}")
-st.metric("Now", f"{price_now:.2f}")
-st.metric("5-min Change", f"{change_5m:.2f} ({change_5m_pct:.2f}%)")
-
-if abs(change_5m_pct) < 0.1:
-    filters_passed = False
-    reasons.append("No momentum (5m change too small)")
+    st.metric("5-min Ago", f"{price_5m_ago:.2f}")
+    st.metric("Now", f"{price_now:.2f}")
+    st.metric("5-min Change", f"{change_5m:.2f} ({change_5m_pct:.2f}%)")
 
 
 
@@ -361,6 +355,10 @@ for r in reasons:
 # ✅ Candle UI
 st.subheader("🧠 Advanced Candle Analysis")
 st.write(f"**Candle Type:** {candle_type}")
+if abs(change_5m_pct) < 0.1:
+    filters_passed = False
+    reasons.append("No momentum (5m change too small)")
+    
 if pattern:
     st.write(f"**Pattern:** {pattern}")
 st.write("**Context Insight:**")
