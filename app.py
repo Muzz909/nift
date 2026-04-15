@@ -43,7 +43,11 @@ if data.empty:
     st.error("Failed to fetch market data.")
     st.stop()
 
-# ✅ FIX 1: Clean missing Close values
+# ✅ FIX: Flatten columns (yfinance MultiIndex issue)
+if isinstance(data.columns, pd.MultiIndex):
+    data.columns = data.columns.get_level_values(0)
+
+# ✅ FIX: Clean missing Close values
 data = data.dropna(subset=['Close'])
 
 # ✅ FIX 2: Prevent crash if not enough data
