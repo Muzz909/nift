@@ -186,6 +186,58 @@ if not context_insight:
 
 # ===========================
 
+# ---------------------------
+# Candle Numeric Breakdown
+# ---------------------------
+
+body_pct = (body / range_candle) * 100 if range_candle != 0 else 0
+upper_wick_pct = (upper_wick / range_candle) * 100 if range_candle != 0 else 0
+lower_wick_pct = (lower_wick / range_candle) * 100 if range_candle != 0 else 0
+
+price_change = c - o
+price_change_pct = (price_change / o) * 100 if o != 0 else 0
+
+volatility_pct = (range_candle / c) * 100 if c != 0 else 0
+
+# Strength classification
+if body_pct > 70:
+    strength = "🔥 Very Strong"
+elif body_pct > 50:
+    strength = "💪 Strong"
+elif body_pct > 30:
+    strength = "⚖️ Moderate"
+else:
+    strength = "😐 Weak / Indecisive"
+
+# ---------------------------
+# Candle Numeric Dashboard
+# ---------------------------
+
+st.subheader("📊 Candle Breakdown (Quant View)")
+
+colA, colB, colC = st.columns(3)
+
+with colA:
+    st.metric("Body %", f"{body_pct:.1f}%")
+    st.metric("Price Change", f"{price_change:.2f}")
+    st.metric("Change %", f"{price_change_pct:.2f}%")
+
+with colB:
+    st.metric("Upper Wick %", f"{upper_wick_pct:.1f}%")
+    st.metric("Lower Wick %", f"{lower_wick_pct:.1f}%")
+    st.metric("Volatility %", f"{volatility_pct:.2f}%")
+
+with colC:
+    st.metric("Candle Strength", strength)
+    st.metric("High", f"{h:.2f}")
+    st.metric("Low", f"{l:.2f}")
+
+
+
+
+
+
+
 # Market Regime
 recent_high = data['High'].rolling(20).max().iloc[-1]
 recent_low = data['Low'].rolling(20).min().iloc[-1]
